@@ -88,4 +88,5 @@ temp/
 target/  
 build/  
 Debug/  
-Release/  
+Release/ 
+.git/ 
