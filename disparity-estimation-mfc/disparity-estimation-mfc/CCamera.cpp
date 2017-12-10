@@ -9,7 +9,7 @@ CCamera::CCamera()
 
 CCamera::CCamera(CWnd *pw)
 {
-	m_pFrame = new CFrame(pw);
+	m_pFrame = new CFrame(pw,320,240);
 }
 
 

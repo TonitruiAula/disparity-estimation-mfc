@@ -18,7 +18,9 @@ public:
 	CWnd *pwnd;
 
 	CFrame();
+	CFrame(int w, int h);
 	CFrame(CWnd *pw);
+	CFrame(CWnd *pw, int w, int h);
 	~CFrame();
 };
 
