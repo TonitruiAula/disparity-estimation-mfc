@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>c:\OpenCV\build\include;c:\OpenCV\build\include\opencv;c:\OpenCV\build\include\opencv2;$(IncludePath)</IncludePath>
-    <LibraryPath>c:\OpenCV\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>c:\OpenCV\build\include;c:\OpenCV\build\include\opencv;c:\OpenCV\build\include\opencv2;c:\OpenCV\DirectShow\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>c:\OpenCV\build\x64\vc14\lib;c:\OpenCV\DirectShow\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -186,6 +186,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CameraDS.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFrame.h" />
     <ClInclude Include="CvvImage.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CameraDS.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CFrame.cpp" />
     <ClCompile Include="CvvImage.cpp" />
