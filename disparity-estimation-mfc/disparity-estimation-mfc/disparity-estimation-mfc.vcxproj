@@ -46,7 +46,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>Static</UseOfMfc>
+    <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -187,6 +187,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CameraDS.h" />
+    <ClInclude Include="CCalibrater.h" />
+    <ClInclude Include="CCalibrationData.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFrame.h" />
     <ClInclude Include="CvvImage.h" />
@@ -198,6 +200,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraDS.cpp" />
+    <ClCompile Include="CCalibrater.cpp" />
+    <ClCompile Include="CCalibrationData.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CFrame.cpp" />
     <ClCompile Include="CvvImage.cpp" />

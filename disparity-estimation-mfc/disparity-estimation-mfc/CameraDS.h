@@ -99,6 +99,8 @@ public:
 	//抓取一帧，返回的IplImage不可手动释放！
 	//返回图像数据的为RGB模式的Top-down(第一个字节为左上角像素)，即IplImage::origin=0(IPL_ORIGIN_TL)
 	IplImage * QueryFrame();
+
+	bool isConnected() { return m_bConnected; }
 };
 
 #endif 

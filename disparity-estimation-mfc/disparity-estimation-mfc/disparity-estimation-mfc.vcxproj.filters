@@ -42,6 +42,12 @@
     <ClInclude Include="CameraDS.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CCalibrater.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CCalibrationData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="disparity-estimation-mfc.cpp">
@@ -63,6 +69,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CameraDS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCalibrater.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CCalibrationData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
