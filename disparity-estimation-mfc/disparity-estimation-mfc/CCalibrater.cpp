@@ -10,16 +10,16 @@ void CCalibrater::shot(cv::Mat frame, bool show)
 	std::vector<cv::Point2f> corners;
 	std::vector<cv::Point3f> worldPoints;
 	cv::Size patternSize(nWidth, nHeight);
-	for (int i = 0; i < nWidth; i++)
+	for (int i = 0; i < nHeight; i++)
 	{
-		for (int j = 0; j < nHeight; j++)
+		for (int j = 0; j < nWidth; j++)
 		{
-			worldPoints.push_back(cv::Point3f(i*lWidth, j*lHeight, 0));
+			worldPoints.push_back(cv::Point3f(j*lWidth, i*lHeight, 0));
 		}
 	}
 	if (cv::findChessboardCorners(gray, patternSize, corners))
 	{
-		cv::cornerSubPix(gray, corners, cv::Size(11, 11), cv::Size(-1, -1)
+		cv::cornerSubPix(gray, corners, cv::Size(5, 5), cv::Size(-1, -1)
 			, cv::TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.001));
 		cv::Mat img;
 		frame.copyTo(img);
