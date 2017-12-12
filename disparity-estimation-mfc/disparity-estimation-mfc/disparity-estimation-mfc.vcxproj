@@ -194,6 +194,8 @@
     <ClInclude Include="CCalibrationData.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CFrame.h" />
+    <ClInclude Include="CRectifyData.h" />
+    <ClInclude Include="CStereoCaliData.h" />
     <ClInclude Include="CvvImage.h" />
     <ClInclude Include="disparity-estimation-mfc.h" />
     <ClInclude Include="disparity-estimation-mfcDlg.h" />
@@ -207,6 +209,8 @@
     <ClCompile Include="CCalibrationData.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CFrame.cpp" />
+    <ClCompile Include="CRectifyData.cpp" />
+    <ClCompile Include="CStereoCaliData.cpp" />
     <ClCompile Include="CvvImage.cpp" />
     <ClCompile Include="disparity-estimation-mfc.cpp" />
     <ClCompile Include="disparity-estimation-mfcDlg.cpp" />

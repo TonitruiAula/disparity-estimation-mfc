@@ -48,6 +48,12 @@
     <ClInclude Include="CCalibrationData.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CStereoCaliData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CRectifyData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="disparity-estimation-mfc.cpp">
@@ -75,6 +81,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CCalibrationData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CStereoCaliData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CRectifyData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -75,10 +75,12 @@ CCalibrater::~CCalibrater()
 void CCalibrater::openFile(std::string path)
 {
 	cv::FileStorage fs(path, cv::FileStorage::READ);
-	if (pData == NULL)
-		pData = new CCalibrationData;
+	//if (pData == NULL)
+	pData = new CCalibrationData;
 	fs["mtx"] >> pData->cameraMatirx;
-	fs["dist"] >>pData->distCoeffs;
+	fs["dist"] >> pData->distCoeffs;
+	fs["cornersVect"] >> cornersVect;
+	fs["worldPointsVect"] >> worldPointsVect;
 	fs.release();
 
 }
@@ -88,7 +90,7 @@ void CCalibrater::saveFile(std::string path)
 	cv::FileStorage fs(path, cv::FileStorage::WRITE);
 	cv::Mat mtx = pData->cameraMatirx;
 	cv::Mat dist = pData->distCoeffs;
-	fs << "mtx" << mtx << "dist" << dist;
+	fs << "mtx" << mtx << "dist" << dist << "cornersVect" << cornersVect << "worldPointsVect" << worldPointsVect;
 	fs.release();
 
 }
