@@ -46,6 +46,7 @@ void CCalibrater::calibrateByPics(std::vector<std::string> filenames)
 	for (int i = 0; i < filenames.size(); i++)
 	{
 		frame = cv::imread(filenames[i]);
+		imgSize = frame.size();
 		shot(frame, false);
 	}
 	calibrate();
