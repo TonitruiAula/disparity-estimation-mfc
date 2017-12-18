@@ -19,9 +19,10 @@ bool matIsEqual(const cv::Mat mat1, const cv::Mat mat2) {
 }
 
 
-bool CStereoCaliData::getData(CCameraDS* pCam, bool fromPic, bool fullCheck)
+bool CStereoCaliData::getData(bool fullCheck)
 {
-	if (!/*checkObjPoints(fullCheck) || */getImgSize(pCam, fromPic))
+	imgSize = pL->imgSize;
+	if (!checkObjPoints(fullCheck))
 		return false;
 	cv::stereoCalibrate(pL->worldPointsVect, pL->cornersVect, pR->cornersVect, pL->pData->cameraMatirx, pL->pData->distCoeffs, pR->pData->cameraMatirx, pR->pData->distCoeffs, imgSize, R, T, E, F);
 	T.at<double>(0, 0) = -T.at<double>(0, 0);
@@ -68,22 +69,24 @@ bool CStereoCaliData::checkObjPoints(bool fullCheck)
 			}
 		}
 	}
-	return false;
-}
-
-bool CStereoCaliData::getImgSize(CCameraDS * pCam, bool fromPic)
-{
-	if (pCam == NULL)
-	{
-		AfxMessageBox(_T("相机未初始化！"));
-		return false;
-	}
-	if (!fromPic)
-		imgSize = cv::Size(pCam->GetWidth(), pCam->GetHeight());
-	else
-		imgSize = pL->imgSize;
 	return true;
 }
+
+
+//bool CStereoCaliData::getImgSize(CCameraDS * pCam, bool fromPic)
+//{
+//	if (pCam == NULL)
+//	{
+//		AfxMessageBox(_T("相机未初始化！"));
+//		return false;
+//	}
+//	if (!fromPic)
+//		imgSize = cv::Size(pCam->GetWidth(), pCam->GetHeight());
+//	else
+//		imgSize = pL->imgSize;
+//	return true;
+//}
+
 
 CStereoCaliData::CStereoCaliData()
 {
