@@ -29,7 +29,8 @@ CRectifyData::~CRectifyData()
 
 void CRectifyData::openFile(std::string path)
 {
-	pS = new CStereoCaliData;
+	if(pS == NULL)
+		pS = new CStereoCaliData;
 	pS->openFile(path);
 	cv::FileStorage fs(path, cv::FileStorage::READ);
 	fs["R1"] >> R1;
@@ -67,7 +68,9 @@ void CRectifyData::showEffect(cv::Mat lFrame, cv::Mat rFrame)
 {
 	double p1 = P2.at<double>(1, 3);
 	double p0 = P2.at<double>(0, 3);
-	cv::Size imageSize = lFrame.size();
+	cv::Size imageSize = pS->imgSize;
+	cv::resize(lFrame, lFrame, imageSize);
+	cv::resize(rFrame, rFrame, imageSize);
 	bool verti = p1 > p0;
 	cv::Mat pair;
 	if (verti)

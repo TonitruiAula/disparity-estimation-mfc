@@ -100,9 +100,11 @@ CStereoCaliData::~CStereoCaliData()
 void CStereoCaliData::openFile(std::string path)
 {
 	cv::FileStorage fs(path, cv::FileStorage::READ);
-	pL = new CCalibrater;
+	if(pL == NULL)
+		pL = new CCalibrater;
 	pL->pData = new CCalibrationData;
-	pR = new CCalibrater;
+	if(pR == NULL)
+		pR = new CCalibrater;
 	pR->pData = new CCalibrationData;
 	fs["l_mtx"] >> pL->pData->cameraMatirx;
 	fs["l_dist"] >> pL->pData->distCoeffs;
