@@ -31,25 +31,52 @@ void CCalibrater::shot(cv::Mat frame, bool show)
 	}
 }
 
-void CCalibrater::calibrate()
+double CCalibrater::calibrate()
 {
+	double rst = -1;
 	if (cornersVect.size() > 0 && worldPointsVect.size() > 0)
 	{
 		pData = new CCalibrationData;
-		cv::calibrateCamera(worldPointsVect, cornersVect, imgSize, pData->cameraMatirx, pData->distCoeffs, pData->rvecs, pData->tvecs);
+		rst = cv::calibrateCamera(worldPointsVect, cornersVect, imgSize, pData->cameraMatirx, pData->distCoeffs, pData->rvecs, pData->tvecs);
 	}
+	return rst;
 }
 
-void CCalibrater::calibrateByPics(std::vector<std::string> filenames)
+double CCalibrater::calRPM()
+{
+	double err = 0;
+	double total_err = 0;
+	for (int i = 0; i < cornersVect.size(); i++)
+	{
+		std::vector<cv::Point2f> imgpoints, imgpoints2;
+		cv::projectPoints(worldPointsVect[i], pData->rvecs[i], pData->tvecs[i], pData->cameraMatirx, pData->distCoeffs, imgpoints2);
+		imgpoints = cornersVect[i];
+		cv::Mat imgpointsMat = cv::Mat(1, imgpoints.size(), CV_32FC2);
+		cv::Mat imgpoints2Mat = cv::Mat(1, imgpoints2.size(), CV_32FC2);
+		for (int j = 0; j < imgpoints.size(); j++)
+		{
+			imgpointsMat.at<cv::Vec2f>(0, j) = cv::Vec2f(imgpoints[j].x, imgpoints[j].y);
+			imgpoints2Mat.at<cv::Vec2f>(0, j) = cv::Vec2f(imgpoints2[j].x, imgpoints2[j].y);
+		}
+		err = cv::norm(imgpoints2Mat, imgpointsMat, cv::NORM_L2);
+		total_err += err;
+	}
+	total_err /= cornersVect.size();
+	return total_err;
+}
+
+double CCalibrater::calibrateByPics(std::vector<std::string> filenames)
 {
 	cv::Mat frame;
 	for (int i = 0; i < filenames.size(); i++)
 	{
 		frame = cv::imread(filenames[i]);
 		imgSize = frame.size();
+		//shot(frame, true);
 		shot(frame, false);
 	}
-	calibrate();
+	double rst = calibrate();
+	return rst;
 }
 
 CCalibrater::CCalibrater()
@@ -80,6 +107,7 @@ void CCalibrater::openFile(std::string path)
 	pData = new CCalibrationData;
 	fs["mtx"] >> pData->cameraMatirx;
 	fs["dist"] >> pData->distCoeffs;
+	fs["imgSize"] >> imgSize;
 	fs["cornersVect"] >> cornersVect;
 	fs["worldPointsVect"] >> worldPointsVect;
 	fs.release();
@@ -91,7 +119,7 @@ void CCalibrater::saveFile(std::string path)
 	cv::FileStorage fs(path, cv::FileStorage::WRITE);
 	cv::Mat mtx = pData->cameraMatirx;
 	cv::Mat dist = pData->distCoeffs;
-	fs << "mtx" << mtx << "dist" << dist << "cornersVect" << cornersVect << "worldPointsVect" << worldPointsVect;
+	fs << "mtx" << mtx << "dist" << dist << "imgSize" << imgSize << "cornersVect" << cornersVect << "worldPointsVect" << worldPointsVect;
 	fs.release();
 
 }

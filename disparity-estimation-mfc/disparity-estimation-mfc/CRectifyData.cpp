@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CRectifyData.h"
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
 
 bool CRectifyData::getData(double alpha)
 {
@@ -64,7 +66,7 @@ void CRectifyData::saveFile(std::string path)
 	fs.release();
 }
 
-void CRectifyData::showEffect(cv::Mat lFrame, cv::Mat rFrame)
+void CRectifyData::showEffect(cv::Mat lFrame, cv::Mat rFrame, bool chessBoard, int nWidth, int nHeight)
 {
 	double p1 = P2.at<double>(1, 3);
 	double p0 = P2.at<double>(0, 3);
@@ -75,24 +77,61 @@ void CRectifyData::showEffect(cv::Mat lFrame, cv::Mat rFrame)
 	cv::Mat pair;
 	if (verti)
 		pair = cv::Mat::zeros(imageSize.height * 2, imageSize.width, CV_8UC3);
-		//pair = cv::Mat(imageSize.height * 2, imageSize.width, CV_8UC3);
 	else
 		pair = cv::Mat::zeros(imageSize.height, imageSize.width * 2, CV_8UC3);
-		//pair = cv::Mat(imageSize.height, imageSize.width * 2, CV_8UC3);
 	cv::Mat newL, newR;
-	cv::remap(lFrame, newL, mx1, my1, cv::INTER_LANCZOS4);
-	cv::remap(rFrame, newR, mx2, my2, cv::INTER_LANCZOS4);
-	//cv::imshow("lframe", lFrame);
-	//cv::imshow("newL", newL);
+	cv::remap(lFrame, newL, mx1, my1, cv::INTER_LINEAR);
+	cv::remap(rFrame, newR, mx2, my2, cv::INTER_LINEAR);
+
+	std::vector<cv::Point2f> cornersL, cornersR;
+	cv::Mat grayL, grayR;
+	cv::cvtColor(newL, grayL, CV_BGR2GRAY);
+	cv::cvtColor(newR, grayR, CV_BGR2GRAY);
+	cv::Size patternSize(nWidth, nHeight);
+	if (chessBoard)
+	{
+		if (!cv::findChessboardCorners(grayL, patternSize, cornersL) ||
+			!cv::findChessboardCorners(grayR, patternSize, cornersR))
+		{
+			AfxMessageBox(_T("Œ¥’“µΩ∆Â≈Ã∏Ò£°"));
+			chessBoard = false;
+		}
+		else
+		{
+			cv::cornerSubPix(grayL, cornersL, cv::Size(5, 5), cv::Size(-1, -1)
+				, cv::TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.001));
+			cv::cornerSubPix(grayR, cornersR, cv::Size(5, 5), cv::Size(-1, -1)
+				, cv::TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.001));
+			//cv::Mat canvas;
+			//grayL.copyTo(canvas);
+			//cv::drawChessboardCorners(canvas, patternSize, cornersL, true);
+			//cv::imshow("canvas", canvas);
+		}
+	}
+
 	if (!verti)
 	{
 		cv::Mat roi1 = pair(cv::Rect(0, 0, imageSize.width, imageSize.height));
 		cv::Mat roi2 = pair(cv::Rect(imageSize.width, 0, imageSize.width, imageSize.height));
 		newL.copyTo(roi1);
 		newR.copyTo(roi2);
-		for (int i = 0; i < imageSize.height; i += 16)
+		if (chessBoard)
 		{
-			cv::line(pair, cv::Point(0, i), cv::Point(imageSize.width * 2, i), CV_RGB(0, 255, 0));
+			for (int i = 0; i < cornersL.size(); i += nWidth)
+			{
+				srand((unsigned)time(NULL) + i);
+				int j = rand() % nWidth;
+				cv::circle(pair, cornersL[i+j], 3, cv::Scalar(0, 0, 255));
+				cv::circle(pair, cv::Point(imageSize.width + cornersR[i+j].x, cornersR[i+j].y) , 3, cv::Scalar(255, 0, 0));
+				cv::line(pair, cv::Point(0, cornersL[i+j].y), cv::Point(imageSize.width * 2, cornersL[i+j].y), CV_RGB(0, 255, 0));
+			}
+		}
+		else
+		{
+			for (int i = 0; i < imageSize.height; i += 16)
+			{
+				cv::line(pair, cv::Point(0, i), cv::Point(imageSize.width * 2, i), CV_RGB(0, 255, 0));
+			}
 		}
 	}
 	else
@@ -101,9 +140,23 @@ void CRectifyData::showEffect(cv::Mat lFrame, cv::Mat rFrame)
 		cv::Mat roi2 = pair(cv::Rect(0, imageSize.height, imageSize.width, imageSize.height));
 		newL.copyTo(roi1);
 		newR.copyTo(roi2);
-		for (int i = 0; i < imageSize.width; i += 16)
+		if (chessBoard)
 		{
-			cv::line(pair, cv::Point(i, 0), cv::Point(i, imageSize.height * 2), CV_RGB(0, 255, 0));
+			for (int i = 0; i < cornersL.size(); i += nWidth)
+			{
+				srand((unsigned)time(NULL) + i);
+				int j = rand() % nWidth;
+				cv::circle(pair, cornersL[i+j], 3, cv::Scalar(0, 0, 255));
+				cv::circle(pair, cv::Point(cornersR[i+j].x, imageSize.height + cornersR[i+j].y), 3, cv::Scalar(255, 0, 0));
+				cv::line(pair, cv::Point(cornersL[i+j].x, 0), cv::Point(cornersL[i+j].x, imageSize.height * 2), CV_RGB(0, 255, 0));
+			}
+		}
+		else
+		{
+			for (int i = 0; i < imageSize.width; i += 16)
+			{
+				cv::line(pair, cv::Point(i, 0), cv::Point(i, imageSize.height * 2), CV_RGB(0, 255, 0));
+			}
 		}
 	}
 	cv::imshow("effect", pair);

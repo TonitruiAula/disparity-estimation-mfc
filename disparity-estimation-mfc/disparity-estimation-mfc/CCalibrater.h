@@ -19,8 +19,9 @@ public:
 	std::vector<std::vector<cv::Point2f>> cornersVect;
 	std::vector<std::vector<cv::Point3f>> worldPointsVect;  	
 	void shot(cv::Mat frame, bool show = true);
-	void calibrate();
-	void calibrateByPics(std::vector<std::string> filenames);
+	double calibrate();
+	double calRPM();
+	double calibrateByPics(std::vector<std::string> filenames);
 	CCalibrationData* pData;
 	CCalibrater();
 	CCalibrater(int nw, int nh, float lw, float lh);

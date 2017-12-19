@@ -16,6 +16,6 @@ public:
 	~CRectifyData();
 	void openFile(std::string path);
 	void saveFile(std::string path);
-	void showEffect(cv::Mat lFrame, cv::Mat rFrame);
+	void showEffect(cv::Mat lFrame, cv::Mat rFrame, bool chessBoard = false, int nWIdth = 0, int nHeight = 0);
 };
 

@@ -26,6 +26,8 @@ bool CStereoCaliData::getData(bool fullCheck)
 		return false;
 	cv::stereoCalibrate(pL->worldPointsVect, pL->cornersVect, pR->cornersVect, pL->pData->cameraMatirx, pL->pData->distCoeffs, pR->pData->cameraMatirx, pR->pData->distCoeffs, imgSize, R, T, E, F);
 	T.at<double>(0, 0) = -T.at<double>(0, 0);
+	T.at<double>(1, 0) = -T.at<double>(1, 0);
+	T.at<double>(2, 0) = -T.at<double>(2, 0);
 	return true;
 }
 
