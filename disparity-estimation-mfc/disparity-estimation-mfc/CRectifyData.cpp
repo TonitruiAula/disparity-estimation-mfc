@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <string>
+#include <sstream>
 
 bool CRectifyData::getData(double alpha)
 {
@@ -121,6 +123,12 @@ void CRectifyData::showEffect(cv::Mat lFrame, cv::Mat rFrame, bool chessBoard, i
 			{
 				srand((unsigned)time(NULL) + i);
 				int j = rand() % nWidth;
+				double delta = cornersL[i + j].y - cornersR[i + j].y;
+				std::stringstream ss;
+				ss << delta;
+				std::string delta_str = ss.str();
+				cv::Point label_point = cv::Point(cornersL[i + j].x, cornersL[i + j].y + 3);
+				cv::putText(pair, delta_str, label_point, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0));
 				cv::circle(pair, cornersL[i+j], 3, cv::Scalar(0, 0, 255));
 				cv::circle(pair, cv::Point(imageSize.width + cornersR[i+j].x, cornersR[i+j].y) , 3, cv::Scalar(255, 0, 0));
 				cv::line(pair, cv::Point(0, cornersL[i+j].y), cv::Point(imageSize.width * 2, cornersL[i+j].y), CV_RGB(0, 255, 0));
@@ -146,6 +154,12 @@ void CRectifyData::showEffect(cv::Mat lFrame, cv::Mat rFrame, bool chessBoard, i
 			{
 				srand((unsigned)time(NULL) + i);
 				int j = rand() % nWidth;
+				double delta = cornersL[i + j].x - cornersR[i + j].x;
+				std::stringstream ss;
+				ss << delta;
+				std::string delta_str = ss.str();
+				cv::Point label_point = cv::Point(cornersL[i + j].x + 3, cornersL[i + j].y);
+				cv::putText(pair, delta_str, label_point, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0));
 				cv::circle(pair, cornersL[i+j], 3, cv::Scalar(0, 0, 255));
 				cv::circle(pair, cv::Point(cornersR[i+j].x, imageSize.height + cornersR[i+j].y), 3, cv::Scalar(255, 0, 0));
 				cv::line(pair, cv::Point(cornersL[i+j].x, 0), cv::Point(cornersL[i+j].x, imageSize.height * 2), CV_RGB(0, 255, 0));
